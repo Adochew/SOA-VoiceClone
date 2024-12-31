@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Processing Platform</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Audio Processing Platform</h1>
+        <p>Upload audio files, process them, and generate cloned voices in just a few steps!</p>
+    </header>
+
+    <main>
+        <!-- 上传音频 -->
+        <section id="audioUpload">
+            <h2>Step 1: Upload Audio</h2>
+            <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+                <div class="audio-row">
+                    <label for="file-input-1" class="file-input-label">
+                        <span class="file-input-text">选择音频文件</span>
+                    </label>
+                    <span id="audioPreviewContainer-1" style="margin-left: 10px;"></span>
+                </div>
+                <input type="file" id="file-input-1" name="file" accept="audio/*" required class="file-input">
+                <button type="submit">Upload Audio</button>
+            </form>
+            <div id="uploadResult">
+                <h3>Upload Result:</h3>
+                <pre id="uploadResultContent">Waiting for upload result...</pre>
+            </div>
+        </section>
+
+        <!-- 开始识别 -->
+        <section id="audioRecognition">
+            <h2>Step 2: Start Recognition</h2>
+            <button id="recognizeBtn" disabled>Start Recognition</button>
+            <div id="recognitionResult">
+                <h3>Recognition Result:</h3>
+                <pre id="recognitionResultContent">Waiting for recognition result...</pre>
+            </div>
+        </section>
+
+        <!-- 切割音频 -->
+        <section id="audioSplitting">
+            <h2>Step 3: Split Audio by Sentences</h2>
+            <button id="splitAudioBtn" disabled>Split Audio</button>
+            <div id="sentenceList">
+                <h3>Sentences and Audio:</h3>
+                <p id="sentencePlaceholder">No sentences available. Please split the audio first.</p>
+            </div>
+        </section>
+
+        <!-- 提交编辑 -->
+        <section id="editSubmission">
+            <h2>Step 4: Submit Edited Sentences</h2>
+            <button id="submitEditsBtn" disabled>Submit Edited Sentences</button>
+            <pre id="resultMessage" class="result-message">Result will appear here after submission.</pre>
+        </section>
+
+        <!-- 上传参考文件 -->
+        <section id="referenceUpload">
+            <h2>Step 5: Upload Reference Audio and Text</h2>
+            <form id="referenceForm" enctype="multipart/form-data">
+                <div class="audio-row">
+                    <label for="file-input-5" class="file-input-label">
+                        <span class="file-input-text">选择参考音频文件</span>
+                    </label>
+                    <span id="audioPreviewContainer-5" style="margin-left: 10px;"></span>
+                </div>
+                <input type="file" id="file-input-5" name="file" accept="audio/*" required class="file-input">
+
+                <div class="audio-text-container">
+                    <textarea name="text" placeholder="Enter reference text here..." required></textarea>
+                </div>
+                <button type="submit">Upload Reference</button>
+            </form>
+            <div id="referenceResult">
+                <h3>Reference Result:</h3>
+                <pre id="referenceResultContent">No reference uploaded yet.</pre>
+            </div>
+        </section>
+
+        <!-- 生成变声音频 -->
+        <section id="voiceCloning">
+            <h2>Step 6: Generate Cloned Audio</h2>
+            <button id="cloneVoiceBtn" disabled>Generate Cloned Audio</button>
+            <div id="clonedAudioResult">
+                <h3>Cloned Audio Result:</h3>
+                <pre id="clonedAudioResultContent">Waiting for cloned audio result...</pre>
+                <div id="audioList"></div>
+            </div>
+        </section>
+
+        <!-- 模态框 -->
+        <div id="regenerateModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span id="closeModal" class="close">&times;</span>
+                <h3>Regenerate Audio</h3>
+                <p>Update the text for sentence regeneration:</p>
+                <textarea id="regenerateText"></textarea>
+                <button id="confirmRegenerate">Regenerate</button>
+            </div>
+        </div>
+
+        <!-- 合并音频 -->
+        <section id="mergeAudio">
+            <h2>Step 7: Merge Cloned Audio</h2>
+            <button id="mergeAudioBtn" disabled>Merge Cloned Audio</button>
+            <div id="mergedAudioResult">
+                <h3>Merged Audio Result:</h3>
+                <audio id="mergedAudioPlayer" controls style="display: none;">
+                    <source id="mergedAudioSource" src="" type="audio/mp3">
+                </audio>
+                <pre id="mergedAudioMessage">Waiting for merge audio result...</pre>
+            </div>
+        </section>
+
+        <!-- 生成字幕 -->
+        <section id="generateSubtitle">
+            <h2>Step 8: Generate Subtitles (SRT)</h2>
+            <button id="generateSubtitleBtn" disabled>Generate Subtitles</button>
+            <div id="subtitleResult">
+                <h3>Subtitle Result:</h3>
+                <pre id="subtitleResultContent">Waiting for subtitle result...</pre>
+            </div>
+        </section>
+
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Audio Processing Platform. All rights reserved.</p>
+    </footer>
+
+    <!-- 引入 JavaScript 文件 -->
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
